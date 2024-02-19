@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug backend-boilerplate",
+      "cwd": "${workspaceRoot}",
+      "args": ["src/main.ts"],
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register",
+        "--watch"
+      ],
+      "env": {
+        "NODE_OPTIONS": "--max_old_space_size=8192",
+        "NODE_ENV": "development",
+        "NODE_PORT": "4000"
+      },
+      "autoAttachChildProcesses": true,
+      "restart": true,
+      "sourceMaps": true,
+      "stopOnEntry": false,
+      "console": "integratedTerminal"
+    }
+  ]
+}

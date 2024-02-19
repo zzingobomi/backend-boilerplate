@@ -5,7 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import databaseConfig from './database/config/database.config';
 import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
-import mailConfig from './mail/config/mail.config';
 import fileConfig from './files/config/file.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,18 +12,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { HeaderResolver } from 'nestjs-i18n';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
-import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
 import { SessionModule } from './session/session.module';
-import { MailerModule } from './mailer/mailer.module';
+import { AdvertisementsModule } from './advertisements/advertisements.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, mailConfig, fileConfig],
+      load: [databaseConfig, authConfig, appConfig, fileConfig],
       envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({
@@ -60,9 +58,8 @@ import { MailerModule } from './mailer/mailer.module';
     FilesModule,
     AuthModule,
     SessionModule,
-    MailModule,
-    MailerModule,
     HomeModule,
+    AdvertisementsModule,
   ],
 })
 export class AppModule {}

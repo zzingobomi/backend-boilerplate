@@ -13,7 +13,6 @@ import { RoleEnum } from 'src/roles/roles.enum';
 import { AuthProvidersEnum } from './auth-providers.enum';
 import { SocialInterface } from '../social/interfaces/social.interface';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
-import { MailService } from 'src/mail/mail.service';
 import { NullableType } from '../utils/types/nullable.type';
 import { LoginResponseType } from './types/login-response.type';
 import { ConfigService } from '@nestjs/config';
@@ -31,7 +30,6 @@ export class AuthService {
     private jwtService: JwtService,
     private usersService: UsersService,
     private sessionService: SessionService,
-    private mailService: MailService,
     private configService: ConfigService<AllConfigType>,
   ) {}
 
@@ -200,7 +198,7 @@ export class AuthService {
       },
     });
 
-    const hash = await this.jwtService.signAsync(
+    await this.jwtService.signAsync(
       {
         confirmEmailUserId: user.id,
       },
@@ -213,13 +211,6 @@ export class AuthService {
         }),
       },
     );
-
-    await this.mailService.userSignUp({
-      to: dto.email,
-      data: {
-        hash,
-      },
-    });
   }
 
   async confirmEmail(hash: string): Promise<void> {
@@ -281,7 +272,7 @@ export class AuthService {
       );
     }
 
-    const hash = await this.jwtService.signAsync(
+    await this.jwtService.signAsync(
       {
         forgotUserId: user.id,
       },
@@ -294,13 +285,6 @@ export class AuthService {
         }),
       },
     );
-
-    await this.mailService.forgotPassword({
-      to: email,
-      data: {
-        hash,
-      },
-    });
   }
 
   async resetPassword(hash: string, password: string): Promise<void> {
