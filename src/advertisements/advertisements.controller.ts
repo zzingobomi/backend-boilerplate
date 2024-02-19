@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AdvertisementsService } from './advertisements.service';
 import { Advertisement } from './domain/advertisement';
@@ -18,8 +19,15 @@ import { InfinityPaginationResultType } from 'src/utils/types/infinity-paginatio
 import { infinityPagination } from 'src/utils/infinity-pagination';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { UpdateAdvertisementDto } from './dto/update-advertisement.dto';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/roles/roles.decorator';
+import { RoleEnum } from 'src/roles/roles.enum';
+import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'src/roles/roles.guard';
 
+//@ApiBearerAuth()
+//@Roles(RoleEnum.admin)
+//@UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Advertisements')
 @Controller('advertisements')
 export class AdvertisementsController {

@@ -3,11 +3,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 import { Advertisement } from 'src/advertisements/domain/advertisement';
+import { FileEntity } from 'src/files/infrastructure/persistence/relational/entities/file.entity';
 
 @Entity({
   name: 'advertisement',
@@ -19,8 +22,12 @@ export class AdvertisementEntity
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Index()
   @Column({ type: String, nullable: true })
   name?: string | null;
+
+  // @OneToMany(() => FileEntity, (attachmentFile) => attachmentFile.advertisement)
+  // attachmentFiles?: FileEntity[] | null;
 
   @CreateDateColumn()
   createdAt: Date;

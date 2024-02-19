@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 // We use class-transformer in ORM entity and domain entity.
 // We duplicate these rules because you can choose not to use adapters
@@ -10,6 +10,7 @@ import appConfig from 'src/config/app.config';
 import { AppConfig } from 'src/config/app-config.type';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { AdvertisementEntity } from 'src/advertisements/infrastructure/persistence/entities/advertisement.entity';
 
 @Entity({ name: 'file' })
 export class FileEntity extends EntityRelationalHelper {
@@ -49,4 +50,10 @@ export class FileEntity extends EntityRelationalHelper {
     },
   )
   path: string;
+
+  // @ManyToOne(
+  //   (type) => AdvertisementEntity,
+  //   (advertisement) => advertisement.attachmentFiles,
+  // )
+  // advertisement?: AdvertisementEntity | null;
 }

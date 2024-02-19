@@ -7,6 +7,7 @@ import appConfig from 'src/config/app.config';
 import { AppConfig } from 'src/config/app-config.type';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { Advertisement } from 'src/advertisements/domain/advertisement';
 
 export class FileType {
   @ApiProperty({ example: 'cbcfa8b8-3a25-4adb-a9c6-e325f0d0f3ae' })
@@ -45,4 +46,6 @@ export class FileType {
     },
   )
   path: string;
+
+  //advertisement?: Advertisement | null;
 }
