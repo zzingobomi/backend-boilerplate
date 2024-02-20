@@ -47,5 +47,5 @@ export class FileType {
   )
   path: string;
 
-  //advertisement?: Advertisement | null;
+  advertisement?: Advertisement | null;
 }

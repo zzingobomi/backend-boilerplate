@@ -29,7 +29,10 @@ import { RolesGuard } from 'src/roles/roles.guard';
 //@Roles(RoleEnum.admin)
 //@UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Advertisements')
-@Controller('advertisements')
+@Controller({
+  path: 'advertisements',
+  version: '1',
+})
 export class AdvertisementsController {
   constructor(private readonly advertisementsService: AdvertisementsService) {}
 

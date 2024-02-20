@@ -7,7 +7,7 @@ export class Advertisement {
 
   name?: string | null;
 
-  //attachmentFiles?: FileType[] | null;
+  attachmentFiles?: FileType[] | null;
 
   createdAt: Date;
   updatedAt: Date;

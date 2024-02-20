@@ -26,8 +26,12 @@ export class AdvertisementEntity
   @Column({ type: String, nullable: true })
   name?: string | null;
 
-  // @OneToMany(() => FileEntity, (attachmentFile) => attachmentFile.advertisement)
-  // attachmentFiles?: FileEntity[] | null;
+  @OneToMany(
+    () => FileEntity,
+    (attachmentFile) => attachmentFile.advertisement,
+    { nullable: true },
+  )
+  attachmentFiles?: FileEntity[] | null;
 
   @CreateDateColumn()
   createdAt: Date;

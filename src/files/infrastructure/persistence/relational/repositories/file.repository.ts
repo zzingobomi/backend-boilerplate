@@ -31,4 +31,28 @@ export class FileRelationalRepository implements FileRepository {
 
     return entity ? FileMapper.toDomain(entity) : null;
   }
+
+  async update(
+    id: FileType['id'],
+    payload: Partial<FileType>,
+  ): Promise<FileType> {
+    const entity = await this.fileRepository.findOne({
+      where: { id },
+    });
+
+    if (!entity) {
+      throw new Error('File not found');
+    }
+
+    const updatedEntity = await this.fileRepository.save(
+      this.fileRepository.create(
+        FileMapper.toPersistence({
+          ...FileMapper.toDomain(entity),
+          ...payload,
+        }),
+      ),
+    );
+
+    return FileMapper.toDomain(updatedEntity);
+  }
 }

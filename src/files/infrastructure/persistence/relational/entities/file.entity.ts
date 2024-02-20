@@ -51,9 +51,10 @@ export class FileEntity extends EntityRelationalHelper {
   )
   path: string;
 
-  // @ManyToOne(
-  //   (type) => AdvertisementEntity,
-  //   (advertisement) => advertisement.attachmentFiles,
-  // )
-  // advertisement?: AdvertisementEntity | null;
+  @ManyToOne(
+    (type) => AdvertisementEntity,
+    (advertisement) => advertisement.attachmentFiles,
+    { nullable: true },
+  )
+  advertisement?: AdvertisementEntity | null;
 }

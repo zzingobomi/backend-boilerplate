@@ -37,4 +37,6 @@ export class FilesS3Controller {
   async uploadFile(@UploadedFile() file: Express.MulterS3.File) {
     return this.filesService.create(file);
   }
+
+  // TODO: 여러파일 s3 업로드 구현
 }

@@ -62,7 +62,8 @@ export class AdvertisementsRelationalRepository
     const entities = await this.advertisementsRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
       take: paginationOptions.limit,
-      //where: where,   // FIXME where 조건 넣기
+      //relations: { attachmentFiles: true },
+      //where: where,   // TODO where 조건 넣기
       order: sortOptions?.reduce(
         (accumulator, sort) => ({
           ...accumulator,
@@ -79,6 +80,7 @@ export class AdvertisementsRelationalRepository
     fields: EntityCondition<Advertisement>,
   ): Promise<NullableType<Advertisement>> {
     const entity = await this.advertisementsRepository.findOne({
+      relations: { attachmentFiles: true },
       where: fields as FindOptionsWhere<AdvertisementEntity>,
     });
 
