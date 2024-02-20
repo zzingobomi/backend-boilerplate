@@ -35,11 +35,12 @@ export class UsersRelationalRepository implements UserRepository {
     paginationOptions: IPaginationOptions;
   }): Promise<User[]> {
     const where: FindOptionsWhere<UserEntity> = {};
-    if (filterOptions?.roles?.length) {
-      where.role = filterOptions.roles.map((role) => ({
-        id: role.id,
-      }));
-    }
+    // TODO: role 에 대한 filter 구현할것
+    // if (filterOptions?.roles?.length) {
+    //   where.role = filterOptions.roles.map((role) => ({
+    //     id: role.id,
+    //   }));
+    // }
 
     const entities = await this.usersRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,

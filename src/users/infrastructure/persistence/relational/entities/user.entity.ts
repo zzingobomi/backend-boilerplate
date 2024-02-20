@@ -8,9 +8,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { RoleEntity } from '../../../../../roles/infrastructure/persistence/relational/entities/role.entity';
-import { FileEntity } from '../../../../../files/infrastructure/persistence/relational/entities/file.entity';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 import { AuthProvidersEnum } from 'src/auth/auth-providers.enum';
 // We use class-transformer in ORM entity and domain entity.
@@ -57,15 +58,9 @@ export class UserEntity extends EntityRelationalHelper implements User {
   @Column({ type: String, nullable: true })
   userName: string | null;
 
-  @ManyToOne(() => FileEntity, {
-    eager: true,
-  })
-  photo?: FileEntity | null;
-
-  @ManyToOne(() => RoleEntity, {
-    eager: true,
-  })
-  role?: RoleEntity | null;
+  @ManyToMany(() => RoleEntity, (role) => role.users)
+  @JoinTable()
+  roles?: RoleEntity[] | null;
 
   @CreateDateColumn()
   createdAt: Date;

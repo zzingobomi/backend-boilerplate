@@ -13,27 +13,106 @@ export class UserSeedService {
   ) {}
 
   async run() {
-    const countAdmin = await this.repository.count({
+    const countOscar = await this.repository.count({
       where: {
-        role: {
-          id: RoleEnum.admin,
-        },
+        userName: 'Oscar',
       },
     });
 
-    if (!countAdmin) {
+    if (!countOscar) {
       const salt = await bcrypt.genSalt();
-      const password = await bcrypt.hash('1234567890', salt);
+      const password = await bcrypt.hash('oscar', salt);
 
       await this.repository.save(
         this.repository.create({
           userName: 'Oscar',
-          email: 'zzingo5@gmail.com',
+          email: 'oscar@maxst.com',
           password,
-          role: {
-            id: RoleEnum.admin,
-            name: 'Admin',
-          },
+          roles: [
+            {
+              id: RoleEnum.admin,
+              name: 'Admin',
+            },
+          ],
+        }),
+      );
+    }
+
+    const countNick = await this.repository.count({
+      where: {
+        userName: 'Nick',
+      },
+    });
+
+    if (!countNick) {
+      const salt = await bcrypt.genSalt();
+      const password = await bcrypt.hash('nick', salt);
+
+      await this.repository.save(
+        this.repository.create({
+          userName: 'Nick',
+          email: 'nick@maxst.com',
+          password,
+          roles: [
+            {
+              id: RoleEnum.advertisement,
+              name: 'Advertisement',
+            },
+          ],
+        }),
+      );
+    }
+
+    const countLuna = await this.repository.count({
+      where: {
+        userName: 'Luna',
+      },
+    });
+
+    if (!countLuna) {
+      const salt = await bcrypt.genSalt();
+      const password = await bcrypt.hash('luna', salt);
+
+      await this.repository.save(
+        this.repository.create({
+          userName: 'Luna',
+          email: 'luna@maxst.com',
+          password,
+          roles: [
+            {
+              id: RoleEnum.log,
+              name: 'Log',
+            },
+          ],
+        }),
+      );
+    }
+
+    const countLee = await this.repository.count({
+      where: {
+        userName: 'Lee',
+      },
+    });
+
+    if (!countLee) {
+      const salt = await bcrypt.genSalt();
+      const password = await bcrypt.hash('lee', salt);
+
+      await this.repository.save(
+        this.repository.create({
+          userName: 'Lee',
+          email: 'lee@maxst.com',
+          password,
+          roles: [
+            {
+              id: RoleEnum.log,
+              name: 'Log',
+            },
+            {
+              id: RoleEnum.notice,
+              name: 'Notice',
+            },
+          ],
         }),
       );
     }

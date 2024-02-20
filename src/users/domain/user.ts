@@ -17,12 +17,11 @@ export class User {
   @Expose({ groups: ['me', 'admin'] })
   provider: string;
 
-  @Expose({ groups: ['me', 'admin'] })
-  socialId?: string | null;
   userName: string | null;
-  photo?: FileType | null;
-  role?: Role | null;
+
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+
+  roles?: Role[] | null;
 }

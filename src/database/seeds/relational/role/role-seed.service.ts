@@ -12,21 +12,6 @@ export class RoleSeedService {
   ) {}
 
   async run() {
-    const countUser = await this.repository.count({
-      where: {
-        id: RoleEnum.user,
-      },
-    });
-
-    if (!countUser) {
-      await this.repository.save(
-        this.repository.create({
-          id: RoleEnum.user,
-          name: 'User',
-        }),
-      );
-    }
-
     const countAdmin = await this.repository.count({
       where: {
         id: RoleEnum.admin,
@@ -38,6 +23,51 @@ export class RoleSeedService {
         this.repository.create({
           id: RoleEnum.admin,
           name: 'Admin',
+        }),
+      );
+    }
+
+    const countAdvertisement = await this.repository.count({
+      where: {
+        id: RoleEnum.advertisement,
+      },
+    });
+
+    if (!countAdvertisement) {
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.advertisement,
+          name: 'Advertisement',
+        }),
+      );
+    }
+
+    const countLog = await this.repository.count({
+      where: {
+        id: RoleEnum.log,
+      },
+    });
+
+    if (!countLog) {
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.log,
+          name: 'Log',
+        }),
+      );
+    }
+
+    const countNotice = await this.repository.count({
+      where: {
+        id: RoleEnum.notice,
+      },
+    });
+
+    if (!countNotice) {
+      await this.repository.save(
+        this.repository.create({
+          id: RoleEnum.notice,
+          name: 'Notice',
         }),
       );
     }

@@ -11,7 +11,6 @@ import { AuthEmailLoginDto } from './dto/auth-email-login.dto';
 import { AuthUpdateDto } from './dto/auth-update.dto';
 import { RoleEnum } from 'src/roles/roles.enum';
 import { AuthProvidersEnum } from './auth-providers.enum';
-import { SocialInterface } from '../social/interfaces/social.interface';
 import { AuthRegisterLoginDto } from './dto/auth-register-login.dto';
 import { NullableType } from '../utils/types/nullable.type';
 import { LoginResponseType } from './types/login-response.type';
@@ -97,93 +96,13 @@ export class AuthService {
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
       id: user.id,
-      role: user.role,
+      roles: user.roles,
       sessionId: session.id,
     });
 
     return {
       refreshToken,
       token,
-      tokenExpires,
-      user,
-    };
-  }
-
-  async validateSocialLogin(
-    authProvider: string,
-    socialData: SocialInterface,
-  ): Promise<LoginResponseType> {
-    let user: NullableType<User> = null;
-    const socialEmail = socialData.email?.toLowerCase();
-    let userByEmail: NullableType<User> = null;
-
-    if (socialEmail) {
-      userByEmail = await this.usersService.findOne({
-        email: socialEmail,
-      });
-    }
-
-    if (socialData.id) {
-      user = await this.usersService.findOne({
-        socialId: socialData.id,
-        provider: authProvider,
-      });
-    }
-
-    if (user) {
-      if (socialEmail && !userByEmail) {
-        user.email = socialEmail;
-      }
-      await this.usersService.update(user.id, user);
-    } else if (userByEmail) {
-      user = userByEmail;
-    } else {
-      const role = {
-        id: RoleEnum.user,
-      };
-
-      user = await this.usersService.create({
-        email: socialEmail ?? null,
-        userName: socialData.userName ?? null,
-        socialId: socialData.id,
-        provider: authProvider,
-        role,
-      });
-
-      user = await this.usersService.findOne({
-        id: user?.id,
-      });
-    }
-
-    if (!user) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: {
-            user: 'userNotFound',
-          },
-        },
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    const session = await this.sessionService.create({
-      user,
-    });
-
-    const {
-      token: jwtToken,
-      refreshToken,
-      tokenExpires,
-    } = await this.getTokensData({
-      id: user.id,
-      role: user.role,
-      sessionId: session.id,
-    });
-
-    return {
-      refreshToken,
-      token: jwtToken,
       tokenExpires,
       user,
     };
@@ -435,7 +354,7 @@ export class AuthService {
 
     const { token, refreshToken, tokenExpires } = await this.getTokensData({
       id: session.user.id,
-      role: session.user.role,
+      roles: session.user.roles,
       sessionId: session.id,
     });
 
@@ -458,7 +377,7 @@ export class AuthService {
 
   private async getTokensData(data: {
     id: User['id'];
-    role: User['role'];
+    roles: User['roles'];
     sessionId: Session['id'];
   }) {
     const tokenExpiresIn = this.configService.getOrThrow('auth.expires', {
@@ -471,7 +390,7 @@ export class AuthService {
       await this.jwtService.signAsync(
         {
           id: data.id,
-          role: data.role,
+          roles: data.roles,
           sessionId: data.sessionId,
         },
         {
