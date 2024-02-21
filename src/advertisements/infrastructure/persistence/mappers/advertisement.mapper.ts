@@ -12,6 +12,7 @@ export class AdvertisementMapper {
     advertisement.deletedAt = raw.deletedAt;
 
     if (raw.attachmentFiles) {
+      // TODO: 이게 꼭 필요한가..?
       advertisement.attachmentFiles = [];
       for (const file of raw.attachmentFiles) {
         advertisement.attachmentFiles?.push(FileMapper.toDomain(file));

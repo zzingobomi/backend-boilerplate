@@ -51,11 +51,6 @@ export class UserEntity extends EntityRelationalHelper implements User {
 
   @Index()
   @Column({ type: String, nullable: true })
-  @Expose({ groups: ['me', 'admin'] })
-  socialId?: string | null;
-
-  @Index()
-  @Column({ type: String, nullable: true })
   userName: string | null;
 
   @ManyToMany(() => RoleEntity, (role) => role.users)

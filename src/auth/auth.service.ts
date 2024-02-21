@@ -112,9 +112,11 @@ export class AuthService {
     const user = await this.usersService.create({
       ...dto,
       email: dto.email,
-      role: {
-        id: RoleEnum.user,
-      },
+      roles: [
+        {
+          id: RoleEnum.user,
+        },
+      ],
     });
 
     await this.jwtService.signAsync(

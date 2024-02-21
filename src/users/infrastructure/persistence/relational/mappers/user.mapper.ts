@@ -13,11 +13,10 @@ export class UserMapper {
     user.previousPassword = raw.previousPassword;
     user.provider = raw.provider;
     user.userName = raw.userName;
-    // TODO: Roles 구현
-    //user.role = raw.role;
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
+    user.roles = raw.roles;
     return user;
   }
 
@@ -38,7 +37,8 @@ export class UserMapper {
     userEntity.previousPassword = user.previousPassword;
     userEntity.provider = user.provider;
     userEntity.userName = user.userName;
-    //userEntity.role = role;
+    // TODO: how?
+    //userEntity.roles = user.roles;
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;

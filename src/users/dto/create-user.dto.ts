@@ -18,20 +18,14 @@ export class CreateUserDto {
 
   provider?: string;
 
-  socialId?: string | null;
-
   @ApiProperty({ example: 'Oscar' })
   @IsNotEmpty()
   userName: string | null;
 
-  @ApiProperty({ type: () => FileDto })
-  @IsOptional()
-  photo?: FileDto | null;
-
   @ApiProperty({ type: RoleDto })
   @IsOptional()
   @Type(() => RoleDto)
-  role?: RoleDto | null;
+  roles?: RoleDto[] | null;
 
   hash?: string | null;
 }

@@ -47,38 +47,20 @@ export class UsersService {
       }
     }
 
-    if (clonedPayload.photo?.id) {
-      const fileObject = await this.filesService.findOne({
-        id: clonedPayload.photo.id,
-      });
-      if (!fileObject) {
-        throw new HttpException(
-          {
-            status: HttpStatus.UNPROCESSABLE_ENTITY,
-            errors: {
-              photo: 'imageNotExists',
+    if (clonedPayload.roles && clonedPayload.roles.length > 0) {
+      for (const role of clonedPayload.roles) {
+        const roleObject = Object.values(RoleEnum).includes(role.id);
+        if (!roleObject) {
+          throw new HttpException(
+            {
+              status: HttpStatus.UNPROCESSABLE_ENTITY,
+              errors: {
+                role: 'roleNotExists',
+              },
             },
-          },
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
-      }
-      clonedPayload.photo = fileObject;
-    }
-
-    if (clonedPayload.role?.id) {
-      const roleObject = Object.values(RoleEnum).includes(
-        clonedPayload.role.id,
-      );
-      if (!roleObject) {
-        throw new HttpException(
-          {
-            status: HttpStatus.UNPROCESSABLE_ENTITY,
-            errors: {
-              role: 'roleNotExists',
-            },
-          },
-          HttpStatus.UNPROCESSABLE_ENTITY,
-        );
+            HttpStatus.UNPROCESSABLE_ENTITY,
+          );
+        }
       }
     }
 
@@ -137,22 +119,34 @@ export class UsersService {
       }
     }
 
-    // if (clonedPayload.role?.id) {
-    //   const roleObject = Object.values(RoleEnum).includes(
-    //     clonedPayload.role.id,
-    //   );
-    //   if (!roleObject) {
-    //     throw new HttpException(
-    //       {
-    //         status: HttpStatus.UNPROCESSABLE_ENTITY,
-    //         errors: {
-    //           role: 'roleNotExists',
-    //         },
-    //       },
-    //       HttpStatus.UNPROCESSABLE_ENTITY,
-    //     );
-    //   }
-    // }
+    if (clonedPayload.roles && clonedPayload.roles.length > 0) {
+      for (const role of clonedPayload.roles) {
+        if (!role || !role.id) {
+          throw new HttpException(
+            {
+              status: HttpStatus.UNPROCESSABLE_ENTITY,
+              errors: {
+                role: 'roleNotExists',
+              },
+            },
+            HttpStatus.UNPROCESSABLE_ENTITY,
+          );
+        }
+
+        const roleObject = Object.values(RoleEnum).includes(role.id);
+        if (!roleObject) {
+          throw new HttpException(
+            {
+              status: HttpStatus.UNPROCESSABLE_ENTITY,
+              errors: {
+                role: 'roleNotExists',
+              },
+            },
+            HttpStatus.UNPROCESSABLE_ENTITY,
+          );
+        }
+      }
+    }
 
     return this.usersRepository.update(id, clonedPayload);
   }
