@@ -11,6 +11,7 @@ import { RoleEnum } from 'src/roles/roles.enum';
 import { FilesService } from 'src/files/files.service';
 import bcrypt from 'bcryptjs';
 import { AuthProvidersEnum } from 'src/auth/auth-providers.enum';
+import { Role } from 'src/roles/domain/role';
 
 @Injectable()
 export class UsersService {
@@ -119,22 +120,10 @@ export class UsersService {
       }
     }
 
+    // TODO: 권한을 없애려고 [] 빈 배열을 보냈을 때 처리 필요!
     if (clonedPayload.roles && clonedPayload.roles.length > 0) {
       for (const role of clonedPayload.roles) {
-        if (!role || !role.id) {
-          throw new HttpException(
-            {
-              status: HttpStatus.UNPROCESSABLE_ENTITY,
-              errors: {
-                role: 'roleNotExists',
-              },
-            },
-            HttpStatus.UNPROCESSABLE_ENTITY,
-          );
-        }
-
-        const roleObject = Object.values(RoleEnum).includes(role.id);
-        if (!roleObject) {
+        if (!this.isValidRole(role)) {
           throw new HttpException(
             {
               status: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -149,6 +138,13 @@ export class UsersService {
     }
 
     return this.usersRepository.update(id, clonedPayload);
+  }
+
+  isValidRole(role: DeepPartial<Role> | undefined): boolean {
+    if (!role || !role.id || !Object.values(RoleEnum).includes(role.id)) {
+      return false;
+    }
+    return true;
   }
 
   async softDelete(id: User['id']): Promise<void> {

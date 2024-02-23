@@ -21,13 +21,6 @@ export class UserMapper {
   }
 
   static toPersistence(user: User): UserEntity {
-    //let role: RoleEntity | undefined = undefined;
-
-    // if (user.role) {
-    //   role = new RoleEntity();
-    //   role.id = user.role.id;
-    // }
-
     const userEntity = new UserEntity();
     if (user.id && typeof user.id === 'number') {
       userEntity.id = user.id;
@@ -37,8 +30,16 @@ export class UserMapper {
     userEntity.previousPassword = user.previousPassword;
     userEntity.provider = user.provider;
     userEntity.userName = user.userName;
-    // TODO: how?
-    //userEntity.roles = user.roles;
+
+    if (user.roles && user.roles.length > 0) {
+      userEntity.roles = [];
+      for (const role of user.roles) {
+        const roleEntity = new RoleEntity();
+        roleEntity.id = role.id;
+        userEntity.roles.push(roleEntity);
+      }
+    }
+
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;

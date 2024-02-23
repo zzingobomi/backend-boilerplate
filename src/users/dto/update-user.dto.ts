@@ -28,14 +28,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   userName?: string | null;
 
-  @ApiProperty({ type: FileDto })
-  @IsOptional()
-  photo?: FileDto | null;
-
   @ApiProperty({ type: RoleDto })
   @IsOptional()
   @Type(() => RoleDto)
-  role?: RoleDto | null;
+  roles?: RoleDto[] | null;
 
   hash?: string | null;
 }
