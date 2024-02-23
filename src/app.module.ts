@@ -16,6 +16,9 @@ import { HomeModule } from './home/home.module';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { AllConfigType } from './config/config.type';
 import { SessionModule } from './session/session.module';
+import { AccessControlModule } from 'nest-access-control';
+import { roles } from './app.roles';
+import { NoticesModule } from './notices/notices.module';
 import { AdvertisementsModule } from './advertisements/advertisements.module';
 
 @Module({
@@ -59,6 +62,8 @@ import { AdvertisementsModule } from './advertisements/advertisements.module';
     AuthModule,
     SessionModule,
     HomeModule,
+    AccessControlModule.forRoles(roles),
+    NoticesModule,
     AdvertisementsModule,
   ],
 })
