@@ -4,7 +4,6 @@ import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { CreateUserDto } from './dto/create-user.dto';
 import { NullableType } from '../utils/types/nullable.type';
 import { FilterUserDto, SortUserDto } from './dto/query-user.dto';
-import { UserRepository } from './infrastructure/persistence/user.repository';
 import { DeepPartial } from 'src/utils/types/deep-partial.type';
 import { User } from './domain/user';
 import { RoleEnum } from 'src/roles/roles.enum';
@@ -12,6 +11,7 @@ import { FilesService } from 'src/files/files.service';
 import bcrypt from 'bcryptjs';
 import { AuthProvidersEnum } from 'src/auth/auth-providers.enum';
 import { Role } from 'src/roles/domain/role';
+import { UserRepository } from './infrastructure/persistence/repositories/user.repository';
 
 @Injectable()
 export class UsersService {

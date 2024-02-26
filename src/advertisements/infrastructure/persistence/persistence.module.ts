@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdvertisementEntity } from './entities/advertisement.entity';
 import {
   AdvertisementRepository,
-  AdvertisementsRelationalRepository,
+  AdvertisementsRepositoryImpl,
 } from './repositories/advertisement.repository';
 
 @Module({
@@ -11,9 +11,9 @@ import {
   providers: [
     {
       provide: AdvertisementRepository,
-      useClass: AdvertisementsRelationalRepository,
+      useClass: AdvertisementsRepositoryImpl,
     },
   ],
   exports: [AdvertisementRepository],
 })
-export class RelationalAdvertisementPersistenceModule {}
+export class AdvertisementPersistenceModule {}

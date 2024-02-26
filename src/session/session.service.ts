@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/domain/user';
 import { EntityCondition } from 'src/utils/types/entity-condition.type';
-import { SessionRepository } from './infrastructure/persistence/session.repository';
 import { Session } from './domain/session';
 import { NullableType } from 'src/utils/types/nullable.type';
+import { SessionRepository } from './infrastructure/persistence/repositories/session.repository';
 
 @Injectable()
 export class SessionService {

@@ -8,17 +8,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
+import { EntityHelper } from 'src/utils/entity-helper';
 import { Advertisement } from 'src/advertisements/domain/advertisement';
-import { FileEntity } from 'src/files/infrastructure/persistence/relational/entities/file.entity';
+import { FileEntity } from 'src/files/infrastructure/persistence/entities/file.entity';
 
 @Entity({
   name: 'advertisement',
 })
-export class AdvertisementEntity
-  extends EntityRelationalHelper
-  implements Advertisement
-{
+export class AdvertisementEntity extends EntityHelper implements Advertisement {
   @PrimaryGeneratedColumn()
   id: number;
 

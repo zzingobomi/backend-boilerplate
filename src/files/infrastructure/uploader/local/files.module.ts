@@ -6,11 +6,11 @@ import { diskStorage } from 'multer';
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import { AllConfigType } from 'src/config/config.type';
 import { FilesLocalService } from './files.service';
-import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
+import { FilePersistenceModule } from '../../persistence/persistence.module';
 
 @Module({
   imports: [
-    RelationalFilePersistenceModule,
+    FilePersistenceModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

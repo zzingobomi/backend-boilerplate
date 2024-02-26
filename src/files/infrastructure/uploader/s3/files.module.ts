@@ -7,11 +7,11 @@ import { S3Client } from '@aws-sdk/client-s3';
 import multerS3 from 'multer-s3';
 import { AllConfigType } from 'src/config/config.type';
 import { FilesS3Service } from './files.service';
-import { RelationalFilePersistenceModule } from '../../persistence/relational/relational-persistence.module';
+import { FilePersistenceModule } from '../../persistence/persistence.module';
 
 @Module({
   imports: [
-    RelationalFilePersistenceModule,
+    FilePersistenceModule,
     MulterModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

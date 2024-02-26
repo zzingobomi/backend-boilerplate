@@ -8,12 +8,12 @@ import {
   Column,
 } from 'typeorm';
 import { Notice } from 'src/notices/domain/notice';
-import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
+import { EntityHelper } from 'src/utils/entity-helper';
 
 @Entity({
   name: 'notice',
 })
-export class NoticeEntity extends EntityRelationalHelper implements Notice {
+export class NoticeEntity extends EntityHelper implements Notice {
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -41,7 +41,7 @@ export abstract class NoticeRepository {
 }
 
 @Injectable()
-export class NoticesRelationalRepository implements NoticeRepository {
+export class NoticesRepositoryImpl implements NoticeRepository {
   constructor(
     @InjectRepository(NoticeEntity)
     private readonly noticesRepository: Repository<NoticeEntity>,

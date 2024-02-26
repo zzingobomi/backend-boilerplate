@@ -36,9 +36,7 @@ export abstract class AdvertisementRepository {
 }
 
 @Injectable()
-export class AdvertisementsRelationalRepository
-  implements AdvertisementRepository
-{
+export class AdvertisementsRepositoryImpl implements AdvertisementRepository {
   constructor(
     @InjectRepository(AdvertisementEntity)
     private readonly advertisementsRepository: Repository<AdvertisementEntity>,

@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NoticeEntity } from './entities/notice.entity';
 import {
   NoticeRepository,
-  NoticesRelationalRepository,
+  NoticesRepositoryImpl,
 } from './repositories/notice.repository';
 
 @Module({
@@ -11,9 +11,9 @@ import {
   providers: [
     {
       provide: NoticeRepository,
-      useClass: NoticesRelationalRepository,
+      useClass: NoticesRepositoryImpl,
     },
   ],
   exports: [NoticeRepository],
 })
-export class RelationalNoticePersistenceModule {}
+export class NoticePersistenceModule {}

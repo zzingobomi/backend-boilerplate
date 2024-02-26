@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AdvertisementsService } from './advertisements.service';
 import { AdvertisementsController } from './advertisements.controller';
-import { RelationalAdvertisementPersistenceModule } from './infrastructure/persistence/persistence.module';
+import { AdvertisementPersistenceModule } from './infrastructure/persistence/persistence.module';
 import { FilesModule } from 'src/files/files.module';
 
 @Module({
-  imports: [RelationalAdvertisementPersistenceModule, FilesModule],
+  imports: [AdvertisementPersistenceModule, FilesModule],
   controllers: [AdvertisementsController],
   providers: [AdvertisementsService],
-  exports: [AdvertisementsService, RelationalAdvertisementPersistenceModule],
+  exports: [AdvertisementsService, AdvertisementPersistenceModule],
 })
 export class AdvertisementsModule {}

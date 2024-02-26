@@ -1,6 +1,6 @@
 import { Advertisement } from 'src/advertisements/domain/advertisement';
 import { AdvertisementEntity } from '../entities/advertisement.entity';
-import { FileMapper } from 'src/files/infrastructure/persistence/relational/mappers/file.mapper';
+import { FileMapper } from 'src/files/infrastructure/persistence/mappers/file.mapper';
 
 export class AdvertisementMapper {
   static toDomain(raw: AdvertisementEntity): Advertisement {
