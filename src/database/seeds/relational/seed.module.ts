@@ -7,11 +7,13 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { TypeOrmConfigService } from '../../typeorm-config.service';
 import { RoleSeedModule } from './role/role-seed.module';
 import { UserSeedModule } from './user/user-seed.module';
+import { NoticeSeedModule } from './notice/notice-seed.module';
 
 @Module({
   imports: [
     RoleSeedModule,
     UserSeedModule,
+    NoticeSeedModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig, appConfig],
