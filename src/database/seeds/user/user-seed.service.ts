@@ -116,5 +116,38 @@ export class UserSeedService {
         }),
       );
     }
+
+    const countDongkey = await this.repository.count({
+      where: {
+        userName: 'Dongkey',
+      },
+    });
+
+    if (!countDongkey) {
+      const salt = await bcrypt.genSalt();
+      const password = await bcrypt.hash('dongkey', salt);
+
+      await this.repository.save(
+        this.repository.create({
+          userName: 'Dongkey',
+          email: 'dongkey@maxst.com',
+          password,
+          roles: [
+            {
+              id: RoleEnum.log,
+              name: 'Log',
+            },
+            {
+              id: RoleEnum.notice,
+              name: 'Notice',
+            },
+            {
+              id: RoleEnum.advertisement,
+              name: 'Advertisement',
+            },
+          ],
+        }),
+      );
+    }
   }
 }

@@ -9,9 +9,10 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { NoticesService } from './notices.service';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateNoticeDto } from './dto/create-notice.dto';
 import { Notice } from './domain/notice';
 import { QueryNoticeDto } from './dto/query-notice.dto';
@@ -19,18 +20,34 @@ import { InfinityPaginationResultType } from 'src/utils/types/infinity-paginatio
 import { infinityPagination } from 'src/utils/infinity-pagination';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
+import { RolesGuard } from 'src/roles/roles.guard';
+import { ACGuard, UseRoles } from 'nest-access-control';
+import { ResourceEnum } from 'src/app.resources';
 
+@ApiBearerAuth()
 @ApiTags('Notices')
 @Controller({ path: 'notices', version: '1' })
 export class NoticesController {
   constructor(private readonly noticesService: NoticesService) {}
 
+  @UseGuards(RolesGuard, ACGuard)
+  @UseRoles({
+    resource: ResourceEnum.notice,
+    action: 'create',
+    possession: 'any',
+  })
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createNoticeDto: CreateNoticeDto): Promise<Notice> {
     return this.noticesService.create(createNoticeDto);
   }
 
+  @UseGuards(RolesGuard, ACGuard)
+  @UseRoles({
+    resource: ResourceEnum.notice,
+    action: 'read',
+    possession: 'any',
+  })
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(
@@ -55,6 +72,12 @@ export class NoticesController {
     );
   }
 
+  @UseGuards(RolesGuard, ACGuard)
+  @UseRoles({
+    resource: ResourceEnum.notice,
+    action: 'read',
+    possession: 'any',
+  })
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -66,6 +89,12 @@ export class NoticesController {
     return this.noticesService.findOne({ id });
   }
 
+  @UseGuards(RolesGuard, ACGuard)
+  @UseRoles({
+    resource: ResourceEnum.notice,
+    action: 'update',
+    possession: 'any',
+  })
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
@@ -80,6 +109,12 @@ export class NoticesController {
     return this.noticesService.update(id, updateNoticeDto);
   }
 
+  @UseGuards(RolesGuard, ACGuard)
+  @UseRoles({
+    resource: ResourceEnum.notice,
+    action: 'delete',
+    possession: 'any',
+  })
   @Delete(':id')
   @ApiParam({
     name: 'id',

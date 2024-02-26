@@ -1,20 +1,19 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+export class RolesGuard extends AuthGuard('jwt') {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    await super.canActivate(context);
 
-  canActivate(context: ExecutionContext): boolean {
-    const roles = this.reflector.getAllAndOverride<number[]>('roles', [
-      context.getClass(),
-      context.getHandler(),
-    ]);
-    if (!roles.length) {
-      return true;
-    }
     const request = context.switchToHttp().getRequest();
 
-    return roles.includes(request.user?.role?.id);
+    if (request.user?.roles) {
+      request.user.roles = request.user.roles.map((role) =>
+        role.name.toLowerCase(),
+      );
+    }
+
+    return true;
   }
 }
