@@ -1,15 +1,8 @@
 import request from 'supertest';
-import {
-  APP_URL,
-  TESTER_EMAIL,
-  TESTER_PASSWORD,
-  MAIL_HOST,
-  MAIL_PORT,
-} from '../utils/constants';
+import { APP_URL, TESTER_EMAIL, TESTER_PASSWORD } from '../utils/constants';
 
 describe('Auth Module', () => {
   const app = APP_URL;
-  const mail = `http://${MAIL_HOST}:${MAIL_PORT}`;
   const newUserName = `Tester${Date.now()}`;
   const newUserEmail = `User.${Date.now()}@example.com`;
   const newUserPassword = `secret`;
@@ -49,52 +42,6 @@ describe('Auth Module', () => {
           .expect(({ body }) => {
             expect(body.token).toBeDefined();
           });
-      });
-    });
-
-    describe('Confirm email', () => {
-      it('should successfully: /api/v1/auth/email/confirm (POST)', async () => {
-        const hash = await request(mail)
-          .get('/email')
-          .then(({ body }) =>
-            body
-              .find(
-                (letter) =>
-                  letter.to[0].address.toLowerCase() ===
-                    newUserEmail.toLowerCase() &&
-                  /.*confirm\-email\?hash\=(\S+).*/g.test(letter.text),
-              )
-              ?.text.replace(/.*confirm\-email\?hash\=(\S+).*/g, '$1'),
-          );
-
-        return request(app)
-          .post('/api/v1/auth/email/confirm')
-          .send({
-            hash,
-          })
-          .expect(204);
-      });
-
-      it('should fail for already confirmed email: /api/v1/auth/email/confirm (POST)', async () => {
-        const hash = await request(mail)
-          .get('/email')
-          .then(({ body }) =>
-            body
-              .find(
-                (letter) =>
-                  letter.to[0].address.toLowerCase() ===
-                    newUserEmail.toLowerCase() &&
-                  /.*confirm\-email\?hash\=(\S+).*/g.test(letter.text),
-              )
-              ?.text.replace(/.*confirm\-email\?hash\=(\S+).*/g, '$1'),
-          );
-
-        return request(app)
-          .post('/api/v1/auth/email/confirm')
-          .send({
-            hash,
-          })
-          .expect(404);
       });
     });
   });

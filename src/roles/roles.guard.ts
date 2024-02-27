@@ -8,6 +8,7 @@ export class RolesGuard extends AuthGuard('jwt') {
 
     const request = context.switchToHttp().getRequest();
 
+    // TODO: 만약 배열로 안들어오면 예외처리 해줘야 할듯?
     if (request.user?.roles) {
       request.user.roles = request.user.roles.map((role) =>
         role.name.toLowerCase(),

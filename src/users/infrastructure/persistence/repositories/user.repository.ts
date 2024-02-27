@@ -59,13 +59,15 @@ export class UsersRepositoryImpl implements UserRepository {
     sortOptions?: SortUserDto[] | null;
     paginationOptions: IPaginationOptions;
   }): Promise<User[]> {
+    // TODO: {{host}}/v1/users?page=1&limit=10&filters={"roles":[{"id":1},{"id":2}]}
+    // OR 조건으로 작동.. AND 도 가능한가?
+    // 형식이 너무 복잡한데 좀 간단히 할 수 없는가?
     const where: FindOptionsWhere<UserEntity> = {};
-    // TODO: role 에 대한 filter 구현할것
-    // if (filterOptions?.roles?.length) {
-    //   where.role = filterOptions.roles.map((role) => ({
-    //     id: role.id,
-    //   }));
-    // }
+    if (filterOptions?.roles?.length) {
+      where.roles = filterOptions.roles.map((role) => ({
+        id: role.id,
+      }));
+    }
 
     const entities = await this.usersRepository.find({
       skip: (paginationOptions.page - 1) * paginationOptions.limit,
