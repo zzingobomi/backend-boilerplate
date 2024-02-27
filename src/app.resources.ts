@@ -1,5 +1,5 @@
 export enum ResourceEnum {
   'advertisement' = 'advertisement',
-  'log' = 'log',
+  'logdata' = 'logdata',
   'notice' = 'notice',
 }

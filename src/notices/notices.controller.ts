@@ -26,7 +26,10 @@ import { ResourceEnum } from 'src/app.resources';
 
 @ApiBearerAuth()
 @ApiTags('Notices')
-@Controller({ path: 'notices', version: '1' })
+@Controller({
+  path: 'notices',
+  version: '1',
+})
 export class NoticesController {
   constructor(private readonly noticesService: NoticesService) {}
 

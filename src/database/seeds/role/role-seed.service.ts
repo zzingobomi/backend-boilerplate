@@ -59,15 +59,15 @@ export class RoleSeedService {
 
     const countLog = await this.repository.count({
       where: {
-        id: RoleEnum.log,
+        id: RoleEnum.logdata,
       },
     });
 
     if (!countLog) {
       await this.repository.save(
         this.repository.create({
-          id: RoleEnum.log,
-          name: 'Log',
+          id: RoleEnum.logdata,
+          name: 'Logdata',
         }),
       );
     }

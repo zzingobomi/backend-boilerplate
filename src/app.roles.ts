@@ -17,16 +17,16 @@ roles
   .updateAny(ResourceEnum.advertisement)
   .deleteOwn(ResourceEnum.advertisement)
   .deleteAny(ResourceEnum.advertisement)
-  // Log
-  .grant(RoleEnum[RoleEnum.log])
-  .createOwn(ResourceEnum.log)
-  .createAny(ResourceEnum.log)
-  .readOwn(ResourceEnum.log)
-  .readAny(ResourceEnum.log)
-  .updateOwn(ResourceEnum.log)
-  .updateAny(ResourceEnum.log)
-  .deleteOwn(ResourceEnum.log)
-  .deleteAny(ResourceEnum.log)
+  // Logdata
+  .grant(RoleEnum[RoleEnum.logdata])
+  .createOwn(ResourceEnum.logdata)
+  .createAny(ResourceEnum.logdata)
+  .readOwn(ResourceEnum.logdata)
+  .readAny(ResourceEnum.logdata)
+  .updateOwn(ResourceEnum.logdata)
+  .updateAny(ResourceEnum.logdata)
+  .deleteOwn(ResourceEnum.logdata)
+  .deleteAny(ResourceEnum.logdata)
   // Notice
   .grant(RoleEnum[RoleEnum.notice])
   .createOwn(ResourceEnum.notice)
@@ -41,5 +41,5 @@ roles
   .grant(RoleEnum[RoleEnum.admin])
   .extend(RoleEnum[RoleEnum.user])
   .extend(RoleEnum[RoleEnum.advertisement])
-  .extend(RoleEnum[RoleEnum.log])
+  .extend(RoleEnum[RoleEnum.logdata])
   .extend(RoleEnum[RoleEnum.notice]);

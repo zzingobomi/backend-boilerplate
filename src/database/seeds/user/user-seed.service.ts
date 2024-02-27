@@ -80,8 +80,8 @@ export class UserSeedService {
           password,
           roles: [
             {
-              id: RoleEnum.log,
-              name: 'Log',
+              id: RoleEnum.logdata,
+              name: 'Logdata',
             },
           ],
         }),
@@ -105,8 +105,8 @@ export class UserSeedService {
           password,
           roles: [
             {
-              id: RoleEnum.log,
-              name: 'Log',
+              id: RoleEnum.logdata,
+              name: 'Logdata',
             },
             {
               id: RoleEnum.notice,
@@ -134,8 +134,8 @@ export class UserSeedService {
           password,
           roles: [
             {
-              id: RoleEnum.log,
-              name: 'Log',
+              id: RoleEnum.logdata,
+              name: 'Logdata',
             },
             {
               id: RoleEnum.notice,

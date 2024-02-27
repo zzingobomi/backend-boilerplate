@@ -6,6 +6,7 @@ import databaseConfig from './database/config/database.config';
 import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
 import fileConfig from './files/config/file.config';
+import gamelogConfig from './gamelog/config/gamelog.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -20,12 +21,14 @@ import { AccessControlModule } from 'nest-access-control';
 import { roles } from './app.roles';
 import { NoticesModule } from './notices/notices.module';
 import { AdvertisementsModule } from './advertisements/advertisements.module';
+import { GamelogModule } from './gamelog/gamelog.module';
+import { LogdatasModule } from './logdatas/logdatas.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, fileConfig],
+      load: [databaseConfig, authConfig, appConfig, fileConfig, gamelogConfig],
       envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({
@@ -33,6 +36,19 @@ import { AdvertisementsModule } from './advertisements/advertisements.module';
       dataSourceFactory: async (options: DataSourceOptions) => {
         return new DataSource(options).initialize();
       },
+    }),
+    GamelogModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        host: configService.getOrThrow('gamelog.host', { infer: true }),
+        port: configService.getOrThrow('gamelog.port', { infer: true }),
+        user: configService.getOrThrow('gamelog.user', { infer: true }),
+        password: configService.getOrThrow('gamelog.password', {
+          infer: true,
+        }),
+        database: configService.getOrThrow('gamelog.database', { infer: true }),
+      }),
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService<AllConfigType>) => ({
@@ -65,6 +81,7 @@ import { AdvertisementsModule } from './advertisements/advertisements.module';
     AccessControlModule.forRoles(roles),
     NoticesModule,
     AdvertisementsModule,
+    LogdatasModule,
   ],
 })
 export class AppModule {}
