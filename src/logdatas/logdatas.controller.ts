@@ -5,6 +5,7 @@ import { RolesGuard } from 'src/roles/roles.guard';
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { ResourceEnum } from 'src/app.resources';
 
+// TODO: 컨트롤러 수준에서 왜 안되는지 살펴보기
 @UseGuards(RolesGuard, ACGuard)
 @UseRoles({
   resource: ResourceEnum.logdata,
