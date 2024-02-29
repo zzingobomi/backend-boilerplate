@@ -14,6 +14,7 @@ yarn start:dev
 
 - User filter 조건 AND 조건 적용 가능한가? 좀더 편리하게 사용하게 가능한가?
 - 테스트 코드 어떻게 할지 동키와 논의하기
+- Typeorm Replica 적용
 - WebDB에 DB 구축 (잃어버리면 안되는 데이터) Ex. 우편, Push, 공지, 보상관련
 - WebDB W/R (레플리카 기능) 구축 - 로컬은 필요없고 라이브에서 미리 연습해보기
 - Redis Pub/Sub 구조 구축 (잃어버려도 되는 데이터, 실시간) Ex. 킥기능, 실시간 공지, ElasticCache 사용

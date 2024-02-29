@@ -39,4 +39,24 @@ export const AppDataSource = new DataSource({
           }
         : undefined,
   },
+  // TODO: replication typeorm 적용해보고 테스트하기
+  // https://orkhan.gitbook.io/typeorm/docs/multiple-data-sources
+  // replication: {
+  //   master: {
+  //     host: '127.0.0.1',
+  //     port: 3306,
+  //     username: 'test',
+  //     password: 'test',
+  //     database: 'test',
+  //   },
+  //   slaves: [
+  //     {
+  //       host: '127.0.0.1',
+  //       port: 3306,
+  //       username: 'test',
+  //       password: 'test',
+  //       database: 'test',
+  //     },
+  //   ],
+  // },
 } as DataSourceOptions);
