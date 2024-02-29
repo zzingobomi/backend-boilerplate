@@ -6,13 +6,13 @@ import { ACGuard, UseRoles } from 'nest-access-control';
 import { ResourceEnum } from 'src/app.resources';
 
 // TODO: 컨트롤러 수준에서 왜 안되는지 살펴보기
-@UseGuards(RolesGuard, ACGuard)
-@UseRoles({
-  resource: ResourceEnum.logdata,
-  action: 'read',
-  possession: 'any',
-})
-@ApiBearerAuth()
+// @UseGuards(RolesGuard, ACGuard)
+// @UseRoles({
+//   resource: ResourceEnum.logdata,
+//   action: 'read',
+//   possession: 'any',
+// })
+// @ApiBearerAuth()
 @ApiTags('Logdatas')
 @Controller({
   path: 'logdatas',
@@ -21,28 +21,18 @@ import { ResourceEnum } from 'src/app.resources';
 export class LogdatasController {
   constructor(private readonly logdatasService: LogdatasService) {}
 
-  @Get('data1')
-  getData1() {
-    return this.logdatasService.data1();
+  @Get('logdb1')
+  getLogdb1() {
+    return this.logdatasService.logdb1();
   }
 
-  @Get('data2')
-  getData2() {
-    return this.logdatasService.data2();
+  @Get('logdb2')
+  getLogdb2() {
+    return this.logdatasService.logdb2();
   }
 
-  @Get('data3')
-  getData3() {
-    return this.logdatasService.data3();
-  }
-
-  @Get('data4')
-  getData4() {
-    return this.logdatasService.data4();
-  }
-
-  @Get('data5')
-  getData5() {
-    return this.logdatasService.data5();
+  @Get('logdb3')
+  getLogdb3() {
+    return this.logdatasService.logdb3();
   }
 }

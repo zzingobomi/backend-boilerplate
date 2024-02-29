@@ -6,7 +6,6 @@ import databaseConfig from './database/config/database.config';
 import authConfig from './auth/config/auth.config';
 import appConfig from './config/app.config';
 import fileConfig from './files/config/file.config';
-import gamelogConfig from './gamelog/config/gamelog.config';
 import path from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -28,7 +27,7 @@ import { LogdatasModule } from './logdatas/logdatas.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, fileConfig, gamelogConfig],
+      load: [databaseConfig, authConfig, appConfig, fileConfig],
       envFilePath: ['.env'],
     }),
     TypeOrmModule.forRootAsync({
@@ -36,19 +35,6 @@ import { LogdatasModule } from './logdatas/logdatas.module';
       dataSourceFactory: async (options: DataSourceOptions) => {
         return new DataSource(options).initialize();
       },
-    }),
-    GamelogModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        host: configService.getOrThrow('gamelog.host', { infer: true }),
-        port: configService.getOrThrow('gamelog.port', { infer: true }),
-        user: configService.getOrThrow('gamelog.user', { infer: true }),
-        password: configService.getOrThrow('gamelog.password', {
-          infer: true,
-        }),
-        database: configService.getOrThrow('gamelog.database', { infer: true }),
-      }),
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService<AllConfigType>) => ({
@@ -81,6 +67,7 @@ import { LogdatasModule } from './logdatas/logdatas.module';
     AccessControlModule.forRoles(roles),
     NoticesModule,
     AdvertisementsModule,
+    GamelogModule,
     LogdatasModule,
   ],
 })

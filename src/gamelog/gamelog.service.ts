@@ -1,59 +1,87 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { CONNECTION_POOL } from './gamelog.module-definition';
-import { Pool, PoolClient } from 'pg';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  Pool,
+  createPool,
+  OkPacket,
+  ResultSetHeader,
+  RowDataPacket,
+  ProcedureCallPacket,
+} from 'mysql2/promise';
+import { IConnectionInfo } from './types/connection-info';
+
+// TODO: InjectConnection 데코레이터에 이름을 넣어서 사용할 수는 없을까?
+// Ex) https://github.com/Tony133/nestjs-mysql
+
+const GLOBAL_DB_NAME = 'globaldb';
+
+export interface QueryOptions {
+  rawQuery: string;
+  database?: string;
+  params?: any[];
+}
 
 @Injectable()
-export class GamelogService {
-  private readonly logger = new Logger('SQL');
-  constructor(@Inject(CONNECTION_POOL) private readonly pool: Pool) {}
+export class GamelogService implements OnModuleInit {
+  public globalDb: Pool;
+  public pools = new Map<string, Pool>();
 
-  async runQuery(query: string, params?: unknown[]) {
-    return this.queryWithLogging(this.pool, query, params);
+  constructor() {
+    this.globalDb = createPool({
+      host: process.env.GAMELOG_HOST as string,
+      port: parseInt(process.env.GAMELOG_PORT as string) ?? 3306,
+      user: process.env.GAMELOG_USER as string,
+      password: process.env.GAMELOG_PASSWORD as string,
+      database: process.env.GAMELOG_DATABASE as string,
+      connectionLimit:
+        parseInt(process.env.GAMELOG_CONNECTION_LIMIT as string) ?? 50,
+    });
+
+    this.pools.set(GLOBAL_DB_NAME, this.globalDb);
+
+    console.log(`✅ GlobalDB Connection Completed`);
   }
 
-  getLogMessage(query: string, params?: unknown[]) {
-    if (!params) {
-      return `Query: ${query}`;
-    }
-    return `Query: ${query} Params: ${JSON.stringify(params)}`;
-  }
+  async onModuleInit() {
+    const [rows] = await this.globalDb.query<
+      IConnectionInfo[] & RowDataPacket[]
+    >(`SELECT * FROM shard_info;`);
 
-  async queryWithLogging(
-    source: Pool | PoolClient,
-    query: string,
-    params?: unknown[],
-  ) {
-    const queryPromise = source.query(query, params);
-
-    // message without unnecessary spaces and newlines
-    const message = this.getLogMessage(query, params)
-      .replace(/\n|/g, '')
-      .replace(/  +/g, ' ');
-
-    queryPromise
-      .then(() => {
-        this.logger.log(message);
-      })
-      .catch((error) => {
-        this.logger.warn(message);
-        throw error;
+    for (const row of rows) {
+      const pool = createPool({
+        host: row.host,
+        port: row.port,
+        user: row.user,
+        password: row.password,
+        database: row.database,
+        connectionLimit:
+          parseInt(process.env.GAMELOG_CONNECTION_LIMIT as string) ?? 50,
       });
 
-    return queryPromise;
+      this.pools.set(row.name, pool);
+    }
+
+    console.log('✅ Gamelog Connection Completed');
   }
 
-  async getPoolClient() {
-    const poolClient = await this.pool.connect();
+  async query(
+    options: QueryOptions,
+  ): Promise<
+    | OkPacket
+    | RowDataPacket[]
+    | ResultSetHeader[]
+    | RowDataPacket[][]
+    | OkPacket[]
+    | ProcedureCallPacket
+  > {
+    const { database = GLOBAL_DB_NAME, rawQuery, params } = options;
 
-    return new Proxy(poolClient, {
-      get: (target: PoolClient, propertyName: keyof PoolClient) => {
-        if (propertyName === 'query') {
-          return (query: string, params?: unknown[]) => {
-            return this.queryWithLogging(target, query, params);
-          };
-        }
-        return target[propertyName];
-      },
-    });
+    const pool = this.pools.get(database);
+    if (!pool) {
+      // TODO: Custom Exception 만들어서 리턴하기
+      throw 'Cannot found database pool';
+    }
+
+    const [results, fields] = await pool.query(rawQuery, params);
+    return results;
   }
 }

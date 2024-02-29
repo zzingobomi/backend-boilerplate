@@ -5,23 +5,15 @@ import { LogdatasRepository } from './logdatas.repository';
 export class LogdatasService {
   constructor(private readonly logdatasRepository: LogdatasRepository) {}
 
-  data1() {
-    return this.logdatasRepository.data1();
+  logdb1() {
+    return this.logdatasRepository.logdb1();
   }
 
-  data2() {
-    return this.logdatasRepository.data2();
+  logdb2() {
+    return this.logdatasRepository.logdb2();
   }
 
-  data3() {
-    return this.logdatasRepository.data3();
-  }
-
-  data4() {
-    return this.logdatasRepository.data4();
-  }
-
-  data5() {
-    return this.logdatasRepository.data5();
+  logdb3() {
+    return this.logdatasRepository.logdb3();
   }
 }
